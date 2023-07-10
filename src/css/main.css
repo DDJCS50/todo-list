@@ -91,16 +91,31 @@ body {
 }
 
 header {
-  background-color: #64748b;
+  background-color: #059669;
   width: 100vw;
-  height: 10vh;
+  height: 7.5vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  box-shadow: inset -4px -4px 20px 0px gray;
+  padding: 12px;
+}
+header > img {
+  height: 50px;
+  width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+}
+header > #plus {
+  height: 25px;
+  width: 25px;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+  background-color: gold;
 }
 
 #sidebar {
-  height: 80vh;
+  height: 92.5vh;
   width: 20%;
   margin: 0;
   display: flex;
@@ -109,23 +124,14 @@ header {
   align-items: center;
   padding: 12px;
   gap: 12px;
-  background-color: #cbd5e1;
+  background-color: #f3f4f6;
 }
 
 main {
-  height: 80vh;
+  height: 92.5vh;
   width: 80%;
   background-color: #f8fafc;
   margin: 0;
-}
-
-footer {
-  background-color: #64748b;
-  width: 100vw;
-  height: 10vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #cardBox {
