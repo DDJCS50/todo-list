@@ -95,7 +95,6 @@ header {
   width: 100vw;
   height: 7.5vh;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   box-shadow: inset -4px -4px 20px 0px gray;
   padding: 12px;
@@ -105,13 +104,15 @@ header > img {
   width: 50px;
   aspect-ratio: 1/1;
   border-radius: 16px;
+  margin-right: auto;
 }
-header > #plus {
+header > #plusTask {
   height: 25px;
   width: 25px;
   aspect-ratio: 1/1;
   border-radius: 16px;
   background-color: gold;
+  margin-right: 4px;
 }
 
 #sidebar {
@@ -122,9 +123,27 @@ header > #plus {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 12px;
+  padding: 16px;
   gap: 12px;
   background-color: #f3f4f6;
+}
+#sidebar > div {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+#sidebar .projectSection {
+  margin-top: 16px;
+}
+#sidebar #newList {
+  margin-top: auto;
+  align-items: center;
+}
+#sidebar #newList > #plusList {
+  height: 25px;
+  width: 25px;
+  aspect-ratio: 1/1;
+  margin-right: 4px;
 }
 
 main {
