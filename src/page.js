@@ -4,6 +4,7 @@ import plus from './plus.svg';
 const homePage = () => {
   const header = document.querySelector('header');
   const sidebar = document.querySelector('#sidebar');
+  const main = document.querySelector('main');
 
   function renderLogo() {
     const logo = document.createElement('img');
@@ -15,7 +16,7 @@ const homePage = () => {
   function renderPlus() {
     const plus = document.createElement('img');
     const plusText = document.createElement('p');
-    plusText.innerText = 'New Task';
+    plusText.innerText = 'New Project';
     plus.src = './images/plus.svg';
     plus.alt = 'Plus sign';
     plus.id = 'plusTask';
@@ -84,13 +85,67 @@ const homePage = () => {
     sidebar.appendChild(newList);
   }
 
+  function renderMainContainer() {
+    const mainBox = document.createElement('div');
+    mainBox.id = 'cardBox';
+
+    main.appendChild(mainBox);
+  }
+
+  function renderMainTitle() {
+    const titleContainer = document.createElement('div');
+    const mainTitle = document.createElement('h1');
+    const mainBlurb = document.createElement('p');
+
+    mainTitle.innerText = 'Prepare Presentation';
+    mainBlurb.innerText = 'Keep the talk and slides simple: what are three things everyone should remember?';
+
+    titleContainer.appendChild(mainTitle);
+    titleContainer.appendChild(mainBlurb);
+    main.appendChild(titleContainer);
+  }
+
+  function renderMainSub(box) {
+    const subContainer = document.createElement('div');
+    subContainer.classList = 'subContainer';
+
+    const titleContainer = document.createElement('div');
+    titleContainer.classList = 'titleContainer';
+    const title = document.createElement('h3');
+    title.innerText = 'Slides and Notes';
+    const edit = document.createElement('img');
+    edit.alt = 'ellipsis';
+
+    const taskContainer = document.createElement('div');
+
+    const taskLabel = document.createElement('label');
+    taskLabel.classList = 'checkboxContainer';
+    taskLabel.innerText = 'Revise Introduction';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    const checkmark = document.createElement('span');
+    checkmark.classList = 'checkmark';
+
+    taskLabel.appendChild(checkbox);
+    taskLabel.appendChild(checkmark);
+    taskContainer.appendChild(taskLabel);
+    titleContainer.appendChild(title);
+    titleContainer.appendChild(edit);
+    subContainer.appendChild(titleContainer);
+    subContainer.appendChild(taskContainer);
+    box.appendChild(subContainer);
+  }
+
   return {
     renderLogo,
     renderPlus,
     renderDueDates,
     renderProjectSections,
     renderProject,
-    renderAddList
+    renderAddList,
+    renderMainContainer,
+    renderMainTitle,
+    renderMainSub
   }
 }
 export const initialRender = homePage();

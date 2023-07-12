@@ -13,3 +13,6 @@ initialRender.renderProject('Prepare Presentation');
 initialRender.renderProjectSections('Hobbies');
 initialRender.renderProject('Learn Basic Italian');
 initialRender.renderAddList();
+initialRender.renderMainTitle();
+initialRender.renderMainContainer();
+initialRender.renderMainSub(document.querySelector('#cardBox'));
