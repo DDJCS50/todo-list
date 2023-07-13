@@ -1,5 +1,6 @@
 import './css/main.css';
 import { initialRender } from './page';
+import { initialTasks } from './log';
 
 initialRender.renderLogo();
 initialRender.renderPlus();
@@ -16,3 +17,4 @@ initialRender.renderAddList();
 initialRender.renderMainTitle();
 initialRender.renderMainContainer();
 initialRender.renderMainSub(document.querySelector('#cardBox'));
+initialTasks.addTask('Receive Funds', 'Need Money', 'August', 1);

@@ -117,17 +117,16 @@ const homePage = () => {
     edit.alt = 'ellipsis';
 
     const taskContainer = document.createElement('div');
+    taskContainer.classList = 'taskContainer';
 
     const taskLabel = document.createElement('label');
-    taskLabel.classList = 'checkboxContainer';
     taskLabel.innerText = 'Revise Introduction';
+    taskLabel.for = 'first';
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    const checkmark = document.createElement('span');
-    checkmark.classList = 'checkmark';
+    checkbox.id = 'first';
 
-    taskLabel.appendChild(checkbox);
-    taskLabel.appendChild(checkmark);
+    taskContainer.appendChild(checkbox);
     taskContainer.appendChild(taskLabel);
     titleContainer.appendChild(title);
     titleContainer.appendChild(edit);
@@ -147,5 +146,5 @@ const homePage = () => {
     renderMainTitle,
     renderMainSub
   }
-}
+};
 export const initialRender = homePage();
