@@ -16,12 +16,14 @@ const homePage = () => {
   function renderPlus() {
     const plus = document.createElement('img');
     const plusText = document.createElement('p');
+    const plusBtn = document.createElement('button');
     plusText.innerText = 'New Project';
     plus.src = './images/plus.svg';
     plus.alt = 'Plus sign';
     plus.id = 'plusTask';
-    header.appendChild(plus);
-    header.appendChild(plusText);
+    plusBtn.appendChild(plus);
+    plusBtn.appendChild(plusText);
+    header.appendChild(plusBtn);
   }
 
   function renderDueDates(section) {
@@ -94,6 +96,7 @@ const homePage = () => {
 
   function renderMainTitle() {
     const titleContainer = document.createElement('div');
+    titleContainer.id = 'mainTitle';
     const mainTitle = document.createElement('h1');
     const mainBlurb = document.createElement('p');
 
@@ -105,14 +108,14 @@ const homePage = () => {
     main.appendChild(titleContainer);
   }
 
-  function renderMainSub(box) {
+  function renderMainSub(box, title, description, dueDate, priority, notes) {
     const subContainer = document.createElement('div');
     subContainer.classList = 'subContainer';
 
     const titleContainer = document.createElement('div');
     titleContainer.classList = 'titleContainer';
-    const title = document.createElement('h3');
-    title.innerText = 'Slides and Notes';
+    const subTitle = document.createElement('h3');
+    subTitle.innerText = title;
     const edit = document.createElement('img');
     edit.alt = 'ellipsis';
 
@@ -128,7 +131,7 @@ const homePage = () => {
 
     taskContainer.appendChild(checkbox);
     taskContainer.appendChild(taskLabel);
-    titleContainer.appendChild(title);
+    titleContainer.appendChild(subTitle);
     titleContainer.appendChild(edit);
     subContainer.appendChild(titleContainer);
     subContainer.appendChild(taskContainer);

@@ -67,16 +67,12 @@ img, picture, svg, video {
 }
 
 button {
-  display: inline-block;
+  display: flex;
   border: none;
-  padding: 1rem 2rem;
   margin: 0;
   text-decoration: none;
-  background: #0069ed;
-  color: #ffffff;
-  font-family: sans-serif;
-  font-size: 1rem;
-  line-height: 1;
+  align-items: center;
+  background-color: #059669;
   cursor: pointer;
   text-align: center;
 }
@@ -107,7 +103,7 @@ header > img {
   border-radius: 16px;
   margin-right: auto;
 }
-header > #plusTask {
+header #plusTask {
   height: 25px;
   width: 25px;
   aspect-ratio: 1/1;
@@ -194,7 +190,7 @@ main {
 .titleContainer {
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid gray;
+  border-bottom: 1px solid lightgray;
 }
 
 h1 {
@@ -249,4 +245,11 @@ label {
   align-items: center;
   width: -moz-max-content;
   width: max-content;
+}
+
+#mainTitle {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  padding-left: 24px;
 }
