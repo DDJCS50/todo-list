@@ -1,12 +1,15 @@
 import './css/main.css';
 import { initialRender } from './page';
 import { initialTasks } from './log';
+import star from './star.svg';
+import calendar from './calendar-month.svg';
+import archive from './archive.svg';
 
 initialRender.renderLogo();
 initialRender.renderPlus();
-initialRender.renderDueDates('Today');
-initialRender.renderDueDates('Upcoming');
-initialRender.renderDueDates('Someday');
+initialRender.renderDueDates('Today', star, 'star');
+initialRender.renderDueDates('Upcoming', calendar, 'calendar');
+initialRender.renderDueDates('Someday', archive, 'archive');
 initialRender.renderProjectSections('Family');
 initialRender.renderProject('Vacation in Rome');
 initialRender.renderProjectSections('Work');

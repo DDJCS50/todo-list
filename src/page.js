@@ -1,5 +1,8 @@
 import logo from './orb-logo.jpg';
 import plus from './plus.svg';
+import ellipsis from './dots-horizontal.svg';
+import sectionSymbol from './circle-half-full.svg';
+import projectSymbol from './package-variant-closed.svg';
 
 const homePage = () => {
   const header = document.querySelector('header');
@@ -26,12 +29,14 @@ const homePage = () => {
     header.appendChild(plusBtn);
   }
 
-  function renderDueDates(section) {
+  function renderDueDates(section, svg, id) {
     const dueDateDiv = document.createElement('div');
     dueDateDiv.id = section.toLowerCase();
 
     const symbol = document.createElement('img');
     symbol.alt = '#';
+    symbol.src = svg;
+    symbol.id = id;
 
     const title = document.createElement('p');
     title.innerText = section;
@@ -48,6 +53,7 @@ const homePage = () => {
 
     const symbol = document.createElement('img');
     symbol.alt = '#';
+    symbol.src = sectionSymbol;
 
     const title = document.createElement('h2');
     title.innerText = section;
@@ -64,6 +70,7 @@ const homePage = () => {
 
     const symbol = document.createElement('img');
     symbol.alt = '#';
+    symbol.src = projectSymbol;
 
     const title = document.createElement('p');
     title.innerText = section;
@@ -118,6 +125,7 @@ const homePage = () => {
     subTitle.innerText = title;
     const edit = document.createElement('img');
     edit.alt = 'ellipsis';
+    edit.src = ellipsis;
 
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
