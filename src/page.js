@@ -121,6 +121,7 @@ const homePage = () => {
 
     const titleContainer = document.createElement('div');
     titleContainer.classList = 'titleContainer';
+    titleContainer.id = title.replace(/\s+/g, '-').toLowerCase();
     const subTitle = document.createElement('h3');
     subTitle.innerText = title;
     const edit = document.createElement('img');
@@ -130,20 +131,25 @@ const homePage = () => {
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
 
-    const taskLabel = document.createElement('label');
-    taskLabel.innerText = 'Revise Introduction';
-    taskLabel.for = 'first';
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = 'first';
-
-    taskContainer.appendChild(checkbox);
-    taskContainer.appendChild(taskLabel);
     titleContainer.appendChild(subTitle);
     titleContainer.appendChild(edit);
     subContainer.appendChild(titleContainer);
     subContainer.appendChild(taskContainer);
     box.appendChild(subContainer);
+  }
+
+  function displayTask(container, title, parentTitle) {
+    const taskContainer = document.createElement('div');
+    taskContainer.classList = 'taskContainer';
+
+    const taskLabel = document.createElement('label');
+    taskLabel.innerText = title;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+
+    taskContainer.appendChild(checkbox);
+    taskContainer.appendChild(taskLabel);
+    container.appendChild(taskContainer);
   }
 
   return {
@@ -155,7 +161,8 @@ const homePage = () => {
     renderAddList,
     renderMainContainer,
     renderMainTitle,
-    renderMainSub
+    renderMainSub,
+    displayTask
   }
 };
 export const initialRender = homePage();
