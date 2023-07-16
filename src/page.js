@@ -48,7 +48,8 @@ const homePage = () => {
 
   function renderProjectSections(section) {
     const projectSection = document.createElement('div');
-    projectSection.id = section;
+    const projectContainer = document.createElement('div');
+    projectSection.id = section.toLowerCase();
     projectSection.classList = 'projectSection';
 
     const symbol = document.createElement('img');
@@ -61,11 +62,12 @@ const homePage = () => {
     projectSection.appendChild(symbol);
     projectSection.appendChild(title);
     sidebar.appendChild(projectSection);
+    sidebar.appendChild(projectContainer);
   }
 
   function renderProject(section) {
     const project = document.createElement('div');
-    project.id = section;
+    project.id = section.replace(/\s+/g, '-').toLowerCase();
     project.classList = 'project';
 
     const symbol = document.createElement('img');
@@ -115,7 +117,7 @@ const homePage = () => {
     main.appendChild(titleContainer);
   }
 
-  function renderMainSub(box, title, description, dueDate, priority, notes) {
+  function renderMainSub(box, title) {
     const subContainer = document.createElement('div');
     subContainer.classList = 'subContainer';
 
@@ -138,7 +140,23 @@ const homePage = () => {
     box.appendChild(subContainer);
   }
 
-  function displayTask(container, title, parentTitle) {
+  function displayProject(container, title, parentTitle) {
+    const project = document.createElement('div');
+    project.classList = 'project';
+
+    const symbol = document.createElement('img');
+    symbol.alt = '#';
+    symbol.src = projectSymbol;
+
+    const projectTitle = document.createElement('p');
+    projectTitle.innerText = title;
+
+    project.appendChild(symbol);
+    project.appendChild(projectTitle);
+    container.appendChild(project);
+  }
+
+  function displayTask(container, title, parentTitle, description, dueDate, priority) {
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
 
@@ -162,7 +180,8 @@ const homePage = () => {
     renderMainContainer,
     renderMainTitle,
     renderMainSub,
-    displayTask
+    displayProject,
+    displayTask,
   }
 };
 export const initialRender = homePage();

@@ -147,6 +147,11 @@ header #plusTask {
   width: 1.5rem;
   height: 1.5rem;
 }
+#sidebar .project {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
 
 main {
   height: 92.5vh;

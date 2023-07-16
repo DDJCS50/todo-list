@@ -1,44 +1,49 @@
 import { initialRender } from "./page";
 
 const taskLog = () => {
+  let myLists = [];
   let myProjects = [];
   let myTasks = [];
   let myToDos = [];
 
-  const taskFactory = (title, description, dueDate, priority, notes) => {
-    let taskInLog = false;
+  const projectFactory = (title, parentTitle) => {
+    let projectInLog = false;
     let taskIndex = 2;
     let taskId = '2';
-
-    const getTitle = () => {
-      title = prompt('What is the title of the task?');
-    }
-
-    return {title, description, dueDate, priority, notes};
-  }
-
-  const toDoFactory = (title, parentTitle) => {
-    let toDoInLog = false;
-    let toDoIndex = 2;
 
     return {title, parentTitle};
   }
 
-  function addToDo(title, parentTitle) {
-    let toDoInLog = false;
-    myToDos.forEach((toDo) => {
-      if (toDo.title == title) {
-        toDoInLog = true;
-      }
-    });
-    if (toDoInLog == false) {
-      let newToDo = toDoFactory(title, parentTitle);
-      myToDos.push(newToDo);
-    }
-    console.log(myToDos);
+  const taskFactory = (title) => {
+    let taskInLog = false;
+    let taskIndex = 2;
+    let taskId = '2';
+
+    return {title};
   }
 
-  function addTask(title, description, dueDate, priority, notes) {
+  const toDoFactory = (title, parentTitle, description, dueDate, priority) => {
+    let toDoInLog = false;
+    let toDoIndex = 2;
+    let toDoId = '2';
+
+    return {title, parentTitle, description, dueDate, priority};
+  }
+
+  function addProject(title, parentTitle) {
+    let projectInLog = false;
+    myProjects.forEach((project) => {
+        if (title == project.title) {
+          projectInLog = true;
+        }
+    });
+    if (projectInLog == false) {
+        let newProject = projectFactory(title, parentTitle);
+        myProjects.push(newProject);
+    }
+  }
+
+  function addTask(title) {
     let taskInLog = false;
     myTasks.forEach((task) => {
         if (title == task.title) {
@@ -46,38 +51,58 @@ const taskLog = () => {
         }
     });
     if (taskInLog == false) {
-        let newTask = taskFactory(title, description, dueDate, priority, notes);
+        let newTask = taskFactory(title);
         myTasks.push(newTask);
     }
-    console.log(myTasks);
+  }
+
+  function addToDo(title, parentTitle, description, dueDate, priority) {
+    let toDoInLog = false;
+    myToDos.forEach((toDo) => {
+      if (toDo.title == title) {
+        toDoInLog = true;
+      }
+    });
+    if (toDoInLog == false) {
+      let newToDo = toDoFactory(title, parentTitle, description, dueDate, priority);
+      myToDos.push(newToDo);
+    }
+  }
+
+  function renderProjects() {
+    myProjects.forEach((project) => {
+      let id = project.parentTitle.replace(/\s+/g, '-').toLowerCase();
+      initialRender.displayProject(document.querySelector(`#${id}`).nextSibling, project.title, project.parentTitle);
+    });
+    console.log(myProjects);
   }
 
   function renderTasks() {
-    for (let i = 0; i < myTasks.length; i++) {
-      myTasks[i].taskIndex = i;
-      myTasks[i].taskId = i.toString();
-    }
     myTasks.forEach((task) => {
       initialRender.renderMainSub(document.querySelector('#cardBox'), task.title);
     });
+    console.log(myTasks);
   }
 
   function renderToDos() {
     for (let i = 0; i < myToDos.length; i++) {
       myToDos[i].toDoIndex = i;
+      myToDos[i].toDoId = i.toString();
     }
     myToDos.forEach((toDo) => {
       let id = toDo.parentTitle.replace(/\s+/g, '-').toLowerCase();
       initialRender.displayTask(document.querySelector(`#${id}`).nextSibling, toDo.title, toDo.parentTitle);
     });
+    console.log(myToDos);
   }
 
   return {
-    taskFactory,
+    addProject,
     addTask,
-    renderTasks, 
     addToDo,
-    renderToDos
+    renderProjects,
+    renderTasks, 
+    renderToDos,
   }
 };
 export const initialTasks = taskLog();
