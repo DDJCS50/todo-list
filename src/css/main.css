@@ -130,14 +130,25 @@ header #plusTask {
   margin-right: auto;
   align-items: center;
 }
+#sidebar > div > button {
+  background-color: #f3f4f6;
+  padding: 0;
+  align-self: flex-start;
+}
 #sidebar .projectSection {
   margin-top: 16px;
 }
 #sidebar #newList {
   margin-top: auto;
   align-items: center;
+  background-color: #f3f4f6;
+  margin-left: auto;
 }
-#sidebar #newList > #plusList {
+#sidebar #newList > div {
+  display: flex;
+  align-items: center;
+}
+#sidebar #newList > div #plusList {
   height: 25px;
   width: 25px;
   aspect-ratio: 1/1;
@@ -272,4 +283,10 @@ label {
   align-self: flex-start;
   flex-direction: column;
   padding-left: 24px;
+}
+
+.projectContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

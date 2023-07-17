@@ -3,6 +3,7 @@ import plus from './plus.svg';
 import ellipsis from './dots-horizontal.svg';
 import sectionSymbol from './circle-half-full.svg';
 import projectSymbol from './package-variant-closed.svg';
+import { initialTasks } from './log';
 
 const homePage = () => {
   const header = document.querySelector('header');
@@ -27,6 +28,15 @@ const homePage = () => {
     plusBtn.appendChild(plus);
     plusBtn.appendChild(plusText);
     header.appendChild(plusBtn);
+    plusBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      initialTasks.addProject(prompt('Project Title:'), prompt('List Section:'));
+      const containers = document.querySelectorAll('.projectContainer');
+      containers.forEach((container) => {
+        container.innerHTML = '';
+      });
+      initialTasks.renderProjects();
+    });
   }
 
   function renderDueDates(section, svg, id) {
@@ -84,7 +94,8 @@ const homePage = () => {
 
   function renderAddList() {
     const newList = document.createElement('div');
-    newList.id = 'newList';
+    const listBtn = document.createElement('button');
+    listBtn.id = 'newList';
     const plus = document.createElement('img');
     const plusText = document.createElement('p');
     plusText.innerText = 'New List';
@@ -93,7 +104,14 @@ const homePage = () => {
     plus.id = 'plusList';
     newList.appendChild(plus);
     newList.appendChild(plusText);
-    sidebar.appendChild(newList);
+    listBtn.appendChild(newList);
+    sidebar.appendChild(listBtn);
+    listBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      const newList = initialTasks.addList(prompt('New List:'));
+      displayLists(newList.title);
+      sidebar.insertBefore(listBtn, sidebar.lastChild.nextSibling);
+    });
   }
 
   function renderMainContainer() {
@@ -103,13 +121,13 @@ const homePage = () => {
     main.appendChild(mainBox);
   }
 
-  function renderMainTitle() {
+  function renderMainTitle(title) {
     const titleContainer = document.createElement('div');
     titleContainer.id = 'mainTitle';
     const mainTitle = document.createElement('h1');
     const mainBlurb = document.createElement('p');
 
-    mainTitle.innerText = 'Prepare Presentation';
+    mainTitle.innerText = title;
     mainBlurb.innerText = 'Keep the talk and slides simple: what are three things everyone should remember?';
 
     titleContainer.appendChild(mainTitle);
@@ -117,6 +135,53 @@ const homePage = () => {
     main.appendChild(titleContainer);
   }
 
+  function displayLists(title) {
+    const projectSection = document.createElement('div');
+    const projectContainer = document.createElement('div');
+    projectContainer.classList = 'projectContainer';
+    projectSection.id = title.toLowerCase();
+    projectSection.classList = 'projectSection';
+
+    const symbol = document.createElement('img');
+    symbol.alt = '#';
+    symbol.src = sectionSymbol;
+
+    const listTitle = document.createElement('h2');
+    listTitle.innerText = title;
+
+    projectSection.appendChild(symbol);
+    projectSection.appendChild(listTitle);
+    sidebar.appendChild(projectSection);
+    sidebar.appendChild(projectContainer);
+  }
+  
+  function displayProject(container, title, parentTitle) {
+    const project = document.createElement('div');
+    const projectBtn = document.createElement('button');
+    projectBtn.id = title.replace(/\s+/g, '-').toLowerCase();
+    project.classList = 'project';
+    
+    const symbol = document.createElement('img');
+    symbol.alt = '#';
+    symbol.src = projectSymbol;
+    
+    const projectTitle = document.createElement('p');
+    projectTitle.innerText = title;
+    
+    project.appendChild(symbol);
+    project.appendChild(projectTitle);
+    projectBtn.appendChild(project);
+    container.appendChild(projectBtn);
+
+    projectBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      main.innerHTML = '';
+      renderMainTitle(title);
+      renderMainContainer();
+      initialTasks.renderTasks(title);
+    });
+  }
+  
   function renderMainSub(box, title) {
     const subContainer = document.createElement('div');
     subContainer.classList = 'subContainer';
@@ -138,22 +203,6 @@ const homePage = () => {
     subContainer.appendChild(titleContainer);
     subContainer.appendChild(taskContainer);
     box.appendChild(subContainer);
-  }
-
-  function displayProject(container, title, parentTitle) {
-    const project = document.createElement('div');
-    project.classList = 'project';
-
-    const symbol = document.createElement('img');
-    symbol.alt = '#';
-    symbol.src = projectSymbol;
-
-    const projectTitle = document.createElement('p');
-    projectTitle.innerText = title;
-
-    project.appendChild(symbol);
-    project.appendChild(projectTitle);
-    container.appendChild(project);
   }
 
   function displayTask(container, title, parentTitle, description, dueDate, priority) {
@@ -179,8 +228,9 @@ const homePage = () => {
     renderAddList,
     renderMainContainer,
     renderMainTitle,
-    renderMainSub,
+    displayLists,
     displayProject,
+    renderMainSub,
     displayTask,
   }
 };
