@@ -56,42 +56,6 @@ const homePage = () => {
     sidebar.appendChild(dueDateDiv);
   }
 
-  function renderProjectSections(section) {
-    const projectSection = document.createElement('div');
-    const projectContainer = document.createElement('div');
-    projectSection.id = section.toLowerCase();
-    projectSection.classList = 'projectSection';
-
-    const symbol = document.createElement('img');
-    symbol.alt = '#';
-    symbol.src = sectionSymbol;
-
-    const title = document.createElement('h2');
-    title.innerText = section;
-
-    projectSection.appendChild(symbol);
-    projectSection.appendChild(title);
-    sidebar.appendChild(projectSection);
-    sidebar.appendChild(projectContainer);
-  }
-
-  function renderProject(section) {
-    const project = document.createElement('div');
-    project.id = section.replace(/\s+/g, '-').toLowerCase();
-    project.classList = 'project';
-
-    const symbol = document.createElement('img');
-    symbol.alt = '#';
-    symbol.src = projectSymbol;
-
-    const title = document.createElement('p');
-    title.innerText = section;
-
-    project.appendChild(symbol);
-    project.appendChild(title);
-    sidebar.appendChild(project);
-  }
-
   function renderAddList() {
     const newList = document.createElement('div');
     const listBtn = document.createElement('button');
@@ -158,6 +122,14 @@ const homePage = () => {
   function displayProject(container, title, parentTitle) {
     const project = document.createElement('div');
     const projectBtn = document.createElement('button');
+    const subImg = document.createElement('img');
+    const subTxt = document.createElement('p');
+    subImg.src = './images/plus.svg';
+    subImg.alt = 'Plus sign';
+    subImg.id = 'plusSub';
+    subTxt.innerText = 'New Sub-Section';
+    const subSectionBtn = document.createElement('button');
+    subSectionBtn.id = 'sub-section-btn';
     projectBtn.id = title.replace(/\s+/g, '-').toLowerCase();
     project.classList = 'project';
     
@@ -172,14 +144,28 @@ const homePage = () => {
     project.appendChild(projectTitle);
     projectBtn.appendChild(project);
     container.appendChild(projectBtn);
-
+    subSectionBtn.appendChild(subImg);
+    subSectionBtn.appendChild(subTxt);
+    
     projectBtn.addEventListener('click', function(event) {
       event.stopPropagation();
+      header.innerHTML = '';
+      renderLogo();
+      renderPlus();
+      header.appendChild(subSectionBtn);
       main.innerHTML = '';
       renderMainTitle(title);
       renderMainContainer();
       initialTasks.renderTasks(title);
     });
+    
+    subSectionBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      const newSubSection = initialTasks.addTask(prompt('New Sub-Section:'), title);
+      cardBox.innerHTML = '';
+      initialTasks.renderTasks(title);
+    });
+
   }
   
   function renderMainSub(box, title) {
@@ -223,8 +209,6 @@ const homePage = () => {
     renderLogo,
     renderPlus,
     renderDueDates,
-    renderProjectSections,
-    renderProject,
     renderAddList,
     renderMainContainer,
     renderMainTitle,
