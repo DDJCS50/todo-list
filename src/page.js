@@ -178,17 +178,12 @@ const homePage = () => {
     titleContainer.id = title.replace(/\s+/g, '-').toLowerCase();
     const subTitle = document.createElement('h3');
     subTitle.innerText = title;
-    // const edit = document.createElement('img');
-    // edit.alt = 'ellipsis';
-    // edit.src = ellipsis;
-
     
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
     
     titleContainer.appendChild(subTitle);
     renderSubDropdown(titleContainer, title);
-    // titleContainer.appendChild(edit);
     subContainer.appendChild(titleContainer);
     subContainer.appendChild(taskContainer);
     box.appendChild(subContainer);
