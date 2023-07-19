@@ -124,6 +124,7 @@ const homePage = () => {
     const projectBtn = document.createElement('button');
     const subImg = document.createElement('img');
     const subTxt = document.createElement('p');
+    
     subImg.src = './images/plus.svg';
     subImg.alt = 'Plus sign';
     subImg.id = 'plusSub';
@@ -177,15 +178,17 @@ const homePage = () => {
     titleContainer.id = title.replace(/\s+/g, '-').toLowerCase();
     const subTitle = document.createElement('h3');
     subTitle.innerText = title;
-    const edit = document.createElement('img');
-    edit.alt = 'ellipsis';
-    edit.src = ellipsis;
+    // const edit = document.createElement('img');
+    // edit.alt = 'ellipsis';
+    // edit.src = ellipsis;
 
+    
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
-
+    
     titleContainer.appendChild(subTitle);
-    titleContainer.appendChild(edit);
+    renderSubDropdown(titleContainer, title);
+    // titleContainer.appendChild(edit);
     subContainer.appendChild(titleContainer);
     subContainer.appendChild(taskContainer);
     box.appendChild(subContainer);
@@ -203,6 +206,53 @@ const homePage = () => {
     taskContainer.appendChild(checkbox);
     taskContainer.appendChild(taskLabel);
     container.appendChild(taskContainer);
+  }
+
+  function renderSubDropdown(box, title) {
+    const container = document.createElement('div');
+    container.classList = 'container';
+    const dropdown = document.createElement('div');
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.id = 'dropdownBtn';
+    dropdown.id = 'dropdown';
+    dropdown.classList = 'dropdown';
+    const toDoBtn = document.createElement('button');
+    const toDoImg = document.createElement('img');
+    const toDoTxt = document.createElement('p');
+
+    toDoBtn.id = 'to-do-btn';
+    toDoImg.src = './images/plus.svg';
+    toDoImg.alt = 'Plus sign';
+    toDoImg.id = 'plusToDo';
+    toDoTxt.innerText = 'New Todo';
+
+    toDoBtn.appendChild(toDoImg);
+    toDoBtn.appendChild(toDoTxt);
+    dropdown.appendChild(toDoBtn);
+    container.appendChild(dropdownBtn)
+    container.appendChild(dropdown);
+    box.appendChild(container);
+
+    toDoBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      const newToDo = initialTasks.addToDo(prompt('New Todo:'), title);
+      initialTasks.renderToDos(title);
+    });
+
+    const toggleDropdown = function () {
+      dropdown.classList.toggle("show");
+    };
+
+    dropdownBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    document.documentElement.addEventListener("click", function () {
+      if (dropdown.classList.contains("show")) {
+        toggleDropdown();
+      }
+    });
   }
 
   return {

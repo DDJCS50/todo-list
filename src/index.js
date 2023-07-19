@@ -29,4 +29,3 @@ initialTasks.addToDo('Something Else', 'Spend Money');
 initialTasks.addToDo('We really need to get funds', 'Receive Funds');
 initialTasks.addToDo('We need funds', 'Receive Funds');
 initialTasks.addToDo('We really need to get dosh', 'Receive Funds');
-initialTasks.renderToDos();

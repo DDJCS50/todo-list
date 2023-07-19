@@ -109,6 +109,8 @@ const taskLog = () => {
       myToDos[i].toDoIndex = i;
       myToDos[i].toDoId = i.toString();
     }
+    const idContainer = document.querySelector(`#${parentTitle.replace(/\s+/g, '-').toLowerCase()}`);
+    idContainer.nextSibling.innerHTML = '';
     myToDos.forEach((toDo) => {
       if (toDo.parentTitle == parentTitle) {
         let id = toDo.parentTitle.replace(/\s+/g, '-').toLowerCase();
