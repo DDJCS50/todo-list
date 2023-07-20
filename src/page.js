@@ -192,15 +192,44 @@ const homePage = () => {
   function displayTask(container, title, parentTitle, description, dueDate, priority) {
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
+    const taskLabelBtn = document.createElement('button');
 
     const taskLabel = document.createElement('label');
     taskLabel.innerText = title;
+    taskLabelBtn.id = title.replace(/\s+/g, '-').toLowerCase();
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-
+    
     taskContainer.appendChild(checkbox);
-    taskContainer.appendChild(taskLabel);
+    taskLabelBtn.appendChild(taskLabel);
+    taskContainer.appendChild(taskLabelBtn);
     container.appendChild(taskContainer);
+
+    renderToDoDropdown(container, taskLabelBtn, taskContainer);
+  }
+
+  function renderToDoDropdown(box, toDoBtn, subContainer) {
+    
+    toDoBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      const visibleDropdown = document.querySelectorAll('.containerToDoDropdown');
+      visibleDropdown.forEach((dropdown) => {
+        dropdown.remove();
+      });
+
+      const container = document.createElement('div');
+      container.classList = 'containerToDoDropdown';
+      const dropdown = document.createElement('div');
+      dropdown.id = 'dropdownToDo';
+      dropdown.classList.add('dropdown', 'show');
+      
+      const someBtn = document.createElement('button');
+      someBtn.innerText = 'Notes';   
+      
+      dropdown.appendChild(someBtn);
+      container.appendChild(dropdown);
+      box.insertBefore(container, subContainer.nextSibling);
+    });
   }
 
   function renderSubDropdown(box, title) {
@@ -224,7 +253,7 @@ const homePage = () => {
     toDoBtn.appendChild(toDoImg);
     toDoBtn.appendChild(toDoTxt);
     dropdown.appendChild(toDoBtn);
-    container.appendChild(dropdownBtn)
+    container.appendChild(dropdownBtn);
     container.appendChild(dropdown);
     box.appendChild(container);
 

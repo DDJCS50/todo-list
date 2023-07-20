@@ -227,6 +227,12 @@ main #plusToDo {
   padding: 0;
 }
 
+#dropdownToDo {
+  width: 500px;
+  position: relative;
+  right: 0;
+}
+
 .container {
   height: 24px;
   width: 24px;
@@ -234,10 +240,15 @@ main #plusToDo {
   background-repeat: no-repeat;
 }
 
+.containerToDoDropdown {
+  position: relative;
+}
+
 .show {
   visibility: visible;
   opacity: 1;
   transform: translateY(0rem);
+  display: block;
 }
 
 #cardBox {
