@@ -189,7 +189,7 @@ const homePage = () => {
     box.appendChild(subContainer);
   }
 
-  function displayTask(container, title, parentTitle, description, dueDate, priority) {
+  function displayTask(container, title, parentTitle, task) {
     const taskContainer = document.createElement('div');
     taskContainer.classList = 'taskContainer';
     const taskLabelBtn = document.createElement('button');
@@ -199,16 +199,38 @@ const homePage = () => {
     taskLabelBtn.id = title.replace(/\s+/g, '-').toLowerCase();
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
+
+    
+    function deleteToDo(toDoDeleteTarget) {
+      const selectedDropdown = document.querySelector('.containerToDoDropdown');
+      taskContainer.remove();
+      if (selectedDropdown != null) {
+        selectedDropdown.remove();
+      }
+      initialTasks.myToDos.splice(toDoDeleteTarget.toDoIndex, 1);
+      console.log(initialTasks.myToDos)
+    }
+    
     
     taskContainer.appendChild(checkbox);
     taskLabelBtn.appendChild(taskLabel);
     taskContainer.appendChild(taskLabelBtn);
     container.appendChild(taskContainer);
+    
+    checkbox.addEventListener('click', function(event) {
+      checkbox.value = 'on';
+    });
 
-    renderToDoDropdown(container, taskLabelBtn, taskContainer);
+    checkbox.addEventListener("click", function () {
+      if (checkbox.value == 'on') {
+        deleteToDo(task);
+      }
+    });
+
+    renderToDoDropdown(container, taskLabelBtn, taskContainer, task);
   }
 
-  function renderToDoDropdown(box, toDoBtn, subContainer) {
+  function renderToDoDropdown(box, toDoBtn, subContainer, toDo) {
     
     toDoBtn.addEventListener('click', function(event) {
       event.stopPropagation();
@@ -223,13 +245,69 @@ const homePage = () => {
       dropdown.id = 'dropdownToDo';
       dropdown.classList.add('dropdown', 'show');
       
-      const someBtn = document.createElement('button');
-      someBtn.innerText = 'Notes';   
+      const saveDescriptionBtn = document.createElement('button');
+      saveDescriptionBtn.innerText = 'Save';
+      const saveDueDateBtn = document.createElement('button');
+      saveDueDateBtn.innerText = 'Save';
+      const savePriorityBtn = document.createElement('button');
+      savePriorityBtn.innerText = 'Save';
+      const description = document.createElement('textarea');
+      const dueDateInput = document.createElement('textarea');
+      dueDateInput.id = 'dueDateInput';
+      const priorityInput = document.createElement('textarea');
+      priorityInput.id = 'priorityInput';
+
+      if (toDo.priority == undefined || toDo.priority == null) {
+        priorityInput.innerText = '';
+      } else {
+        priorityInput.innerText = toDo.priority;
+      }
+      if (toDo.dueDate == undefined || toDo.dueDate == null) {
+        dueDateInput.innerText = '';
+      } else {
+        dueDateInput.innerText = toDo.dueDate;
+      }
+      if (toDo.description == undefined || toDo.description == null) {
+        description.innerText = '';
+      } else {
+        description.innerText = toDo.description;
+      }
       
-      dropdown.appendChild(someBtn);
+      dropdown.appendChild(savePriorityBtn);
+      dropdown.appendChild(priorityInput);
+      dropdown.appendChild(saveDueDateBtn);
+      dropdown.appendChild(dueDateInput);
+      dropdown.appendChild(saveDescriptionBtn);
+      dropdown.appendChild(description);
       container.appendChild(dropdown);
       box.insertBefore(container, subContainer.nextSibling);
+
+      saveDescriptionBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const tempDescription = description.value;
+        tempDescription.toString();
+        description.value = tempDescription;
+        toDo.description = tempDescription;
+      });
+
+      saveDueDateBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const tempDueDate = dueDateInput.value;
+        tempDueDate.toString();
+        dueDateInput.value = tempDueDate;
+        toDo.dueDate = tempDueDate;
+      });
+
+      savePriorityBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const tempPriority = priorityInput.value;
+        tempPriority.toString();
+        priorityInput.value = tempPriority;
+        toDo.priority = tempPriority;
+        console.log(initialTasks.myToDos);
+      });
     });
+    console.log(initialTasks.myToDos);
   }
 
   function renderSubDropdown(box, title) {

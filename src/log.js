@@ -86,7 +86,6 @@ const taskLog = () => {
   }
 
   function renderProjects() {
-    console.log(myProjects);
     myProjects.forEach((project) => {
       let id = project.parentTitle.replace(/\s+/g, '-').toLowerCase();
       initialRender.displayProject(document.querySelector(`#${id}`).nextSibling, project.title, project.parentTitle);
@@ -114,9 +113,10 @@ const taskLog = () => {
     myToDos.forEach((toDo) => {
       if (toDo.parentTitle == parentTitle) {
         let id = toDo.parentTitle.replace(/\s+/g, '-').toLowerCase();
-        initialRender.displayTask(document.querySelector(`#${id}`).nextSibling, toDo.title, toDo.parentTitle);
+        initialRender.displayTask(document.querySelector(`#${id}`).nextSibling, toDo.title, toDo.parentTitle, toDo);
       }
     });
+    console.log(myToDos);
   }
 
   return {
@@ -128,6 +128,7 @@ const taskLog = () => {
     renderProjects,
     renderTasks, 
     renderToDos,
+    myToDos,
   }
 };
 export const initialTasks = taskLog();
