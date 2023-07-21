@@ -256,6 +256,9 @@ main #plusToDo {
   position: relative;
   right: 0;
 }
+#dropdownToDo button {
+  background-color: #059669;
+}
 
 .container {
   height: 24px;
@@ -307,12 +310,21 @@ main #plusToDo {
   flex-direction: column;
   gap: 6px;
   width: 100%;
+  background-color: #f8fafc;
 }
 .subContainer > .taskContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  background-color: #f8fafc;
+}
+.subContainer > .taskContainer label {
+  background-color: #f8fafc;
+  font-size: 1rem;
+}
+.subContainer > .taskContainer button {
+  background-color: #f8fafc;
 }
 
 .titleContainer {
