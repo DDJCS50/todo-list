@@ -39,23 +39,6 @@ const homePage = () => {
     });
   }
 
-  function renderDueDates(section, svg, id) {
-    const dueDateDiv = document.createElement('div');
-    dueDateDiv.id = section.toLowerCase();
-
-    const symbol = document.createElement('img');
-    symbol.alt = '#';
-    symbol.src = svg;
-    symbol.id = id;
-
-    const title = document.createElement('p');
-    title.innerText = section;
-
-    dueDateDiv.appendChild(symbol);
-    dueDateDiv.appendChild(title);
-    sidebar.appendChild(dueDateDiv);
-  }
-
   function renderAddList() {
     const newList = document.createElement('div');
     const listBtn = document.createElement('button');
@@ -89,13 +72,10 @@ const homePage = () => {
     const titleContainer = document.createElement('div');
     titleContainer.id = 'mainTitle';
     const mainTitle = document.createElement('h1');
-    const mainBlurb = document.createElement('p');
 
     mainTitle.innerText = title;
-    mainBlurb.innerText = 'Keep the talk and slides simple: what are three things everyone should remember?';
 
     titleContainer.appendChild(mainTitle);
-    titleContainer.appendChild(mainBlurb);
     main.appendChild(titleContainer);
   }
 
@@ -165,6 +145,7 @@ const homePage = () => {
       const newSubSection = initialTasks.addTask(prompt('New Sub-Section:'), title);
       cardBox.innerHTML = '';
       initialTasks.renderTasks(title);
+      console.log(initialTasks.myTasks);
     });
 
   }
@@ -208,9 +189,9 @@ const homePage = () => {
         selectedDropdown.remove();
       }
       initialTasks.myToDos.splice(toDoDeleteTarget.toDoIndex, 1);
-      console.log(initialTasks.myToDos)
     }
     
+    displayTask.deleteToDo = deleteToDo;
     
     taskContainer.appendChild(checkbox);
     taskLabelBtn.appendChild(taskLabel);
@@ -247,15 +228,17 @@ const homePage = () => {
       
       const saveDescriptionBtn = document.createElement('button');
       saveDescriptionBtn.innerText = 'Save';
-      const saveDueDateBtn = document.createElement('button');
-      saveDueDateBtn.innerText = 'Save';
-      const savePriorityBtn = document.createElement('button');
-      savePriorityBtn.innerText = 'Save';
       const description = document.createElement('textarea');
       const dueDateInput = document.createElement('textarea');
       dueDateInput.id = 'dueDateInput';
       const priorityInput = document.createElement('textarea');
       priorityInput.id = 'priorityInput';
+      const priorityTitle = document.createElement('h2');
+      priorityTitle.innerText = 'Priority:';
+      const dateTitle = document.createElement('h2');
+      dateTitle.innerText = 'Due:';
+      const descriptionTitle = document.createElement('h2');
+      descriptionTitle.innerText = 'Description:';
 
       if (toDo.priority == undefined || toDo.priority == null) {
         priorityInput.innerText = '';
@@ -273,12 +256,13 @@ const homePage = () => {
         description.innerText = toDo.description;
       }
       
-      dropdown.appendChild(savePriorityBtn);
+      dropdown.appendChild(priorityTitle);
       dropdown.appendChild(priorityInput);
-      dropdown.appendChild(saveDueDateBtn);
+      dropdown.appendChild(dateTitle);
       dropdown.appendChild(dueDateInput);
-      dropdown.appendChild(saveDescriptionBtn);
+      dropdown.appendChild(descriptionTitle);
       dropdown.appendChild(description);
+      dropdown.appendChild(saveDescriptionBtn);
       container.appendChild(dropdown);
       box.insertBefore(container, subContainer.nextSibling);
 
@@ -288,26 +272,18 @@ const homePage = () => {
         tempDescription.toString();
         description.value = tempDescription;
         toDo.description = tempDescription;
-      });
 
-      saveDueDateBtn.addEventListener('click', function(event) {
-        event.stopPropagation();
+        const tempPriority = priorityInput.value;
+        tempPriority.toString();
+        priorityInput.value = tempPriority;
+        toDo.priority = tempPriority;
+
         const tempDueDate = dueDateInput.value;
         tempDueDate.toString();
         dueDateInput.value = tempDueDate;
         toDo.dueDate = tempDueDate;
       });
-
-      savePriorityBtn.addEventListener('click', function(event) {
-        event.stopPropagation();
-        const tempPriority = priorityInput.value;
-        tempPriority.toString();
-        priorityInput.value = tempPriority;
-        toDo.priority = tempPriority;
-        console.log(initialTasks.myToDos);
-      });
     });
-    console.log(initialTasks.myToDos);
   }
 
   function renderSubDropdown(box, title) {
@@ -318,9 +294,15 @@ const homePage = () => {
     dropdownBtn.id = 'dropdownBtn';
     dropdown.id = 'dropdown';
     dropdown.classList = 'dropdown';
+
     const toDoBtn = document.createElement('button');
     const toDoImg = document.createElement('img');
     const toDoTxt = document.createElement('p');
+
+    const deleteTaskBtn = document.createElement('button');
+
+    deleteTaskBtn.id = 'delete-task-btn';
+    deleteTaskBtn.innerText = 'Delete Section';
 
     toDoBtn.id = 'to-do-btn';
     toDoImg.src = './images/plus.svg';
@@ -331,6 +313,7 @@ const homePage = () => {
     toDoBtn.appendChild(toDoImg);
     toDoBtn.appendChild(toDoTxt);
     dropdown.appendChild(toDoBtn);
+    dropdown.appendChild(deleteTaskBtn);
     container.appendChild(dropdownBtn);
     container.appendChild(dropdown);
     box.appendChild(container);
@@ -355,12 +338,42 @@ const homePage = () => {
         toggleDropdown();
       }
     });
+
+    function deleteSection(sectionTitle) {
+      for (let i = 0; i < initialTasks.myToDos.length; i++) {
+        initialTasks.myToDos.forEach((toDo) => {
+          const index = toDo.toDoIndex;
+          if (toDo.parentTitle == sectionTitle) {
+            initialTasks.myToDos.splice(index, 1);
+            for (let j = 0; j < initialTasks.myToDos.length; j++) {
+              initialTasks.myToDos[j].toDoIndex = j;
+              initialTasks.myToDos[j].toDoId = j.toString();
+            }
+          }
+          const mainBox = document.querySelector('#cardBox');
+          mainBox.innerHTML = '';
+        });
+      }
+
+      initialTasks.renderTasks(sectionTitle);
+      for (let k = 0; k < initialTasks.myTasks.length; k++) {
+
+        if (initialTasks.myTasks[k].title == sectionTitle) {
+          initialTasks.myTasks.splice(k, 1);
+        }
+        console.log(initialTasks.myTasks);
+      }; 
+    }
+
+    deleteTaskBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      deleteSection(title);
+    });
   }
 
   return {
     renderLogo,
     renderPlus,
-    renderDueDates,
     renderAddList,
     renderMainContainer,
     renderMainTitle,

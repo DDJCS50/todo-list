@@ -7,9 +7,6 @@ import archive from './archive.svg';
 
 initialRender.renderLogo();
 initialRender.renderPlus();
-initialRender.renderDueDates('Today', star, 'star');
-initialRender.renderDueDates('Upcoming', calendar, 'calendar');
-initialRender.renderDueDates('Someday', archive, 'archive');
 initialTasks.addList('Vacations');
 initialTasks.addList('Family');
 initialTasks.addList('Work');

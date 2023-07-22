@@ -203,6 +203,9 @@ main #plusToDo {
   opacity: 0;
   transform: translateY(0.5rem);
   transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .dropdown button {
   display: flex;
@@ -214,6 +217,8 @@ main #plusToDo {
   color: black;
   border-radius: 8px;
   font-size: 0.75rem;
+  width: 115px;
+  height: 50px;
 }
 .dropdown button:hover {
   background-color: #f3f4f6;
@@ -234,6 +239,7 @@ main #plusToDo {
   border-radius: 0;
   border: 1px solid black;
   height: 1.5rem;
+  min-width: 105px;
 }
 .dropdown #priorityInput {
   background-color: #f8fafc;
@@ -241,6 +247,11 @@ main #plusToDo {
   border-radius: 0;
   border: 1px solid black;
   height: 1.5rem;
+  min-width: 25px;
+}
+
+#dropdown {
+  z-index: 2;
 }
 
 #dropdownBtn {
@@ -255,9 +266,19 @@ main #plusToDo {
   width: 100%;
   position: relative;
   right: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-direction: row;
 }
 #dropdownToDo button {
   background-color: #059669;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: center;
+}
+#dropdownToDo h2 {
+  display: flex;
 }
 
 .container {
@@ -276,7 +297,8 @@ main #plusToDo {
   visibility: visible;
   opacity: 1;
   transform: translateY(0rem);
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 #cardBox {

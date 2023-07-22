@@ -129,6 +129,7 @@ const taskLog = () => {
     renderTasks, 
     renderToDos,
     myToDos,
+    myTasks,
   }
 };
 export const initialTasks = taskLog();
