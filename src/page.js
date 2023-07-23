@@ -4,6 +4,9 @@ import ellipsis from './dots-horizontal.svg';
 import sectionSymbol from './circle-half-full.svg';
 import projectSymbol from './package-variant-closed.svg';
 import { initialTasks } from './log';
+import { isBefore, format, isDate, parseISO } from 'date-fns'
+
+const currentDate = new Date();
 
 const homePage = () => {
   const header = document.querySelector('header');
@@ -231,6 +234,7 @@ const homePage = () => {
       const description = document.createElement('textarea');
       const dueDateInput = document.createElement('textarea');
       dueDateInput.id = 'dueDateInput';
+      dueDateInput.placeholder = 'MM-dd-yyyy';
       const priorityInput = document.createElement('textarea');
       priorityInput.id = 'priorityInput';
       const priorityTitle = document.createElement('h2');
@@ -278,10 +282,21 @@ const homePage = () => {
         priorityInput.value = tempPriority;
         toDo.priority = tempPriority;
 
-        const tempDueDate = dueDateInput.value;
-        tempDueDate.toString();
+        let tempDueDate = dueDateInput.value;
+        if (tempDueDate != undefined && tempDueDate != null && tempDueDate != '') {
+          tempDueDate = format(new Date(tempDueDate), "MM-dd-yyyy");
+        }
+        const currentDueDateBox = document.querySelector('#dueDateInput');
+        const today = format(new Date(), 'MM-dd-yyyy');
+        console.log(today);
+        if (isBefore(new Date(tempDueDate), new Date(today))) {
+          currentDueDateBox.style.backgroundColor = "red";
+        } else {
+          currentDueDateBox.style.backgroundColor = "#f8fafc";
+        }
         dueDateInput.value = tempDueDate;
         toDo.dueDate = tempDueDate;
+        console.log(initialTasks.myToDos);
       });
     });
   }
