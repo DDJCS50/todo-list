@@ -120,6 +120,10 @@ header #plusSub {
   margin-right: 4px;
 }
 
+#dropdownList {
+  left: 44px;
+}
+
 #sidebar {
   height: 92.5vh;
   width: 20%;
@@ -138,10 +142,31 @@ header #plusSub {
   margin-right: auto;
   align-items: center;
 }
+#sidebar > div #delete-list-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: black;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  width: 115px;
+  height: 50px;
+  background-color: #059669;
+  justify-content: center;
+  top: -40px;
+}
 #sidebar > div > button {
   background-color: #f3f4f6;
   padding: 0;
   align-self: flex-start;
+}
+#sidebar > div > div > button {
+  display: flex;
+  background: transparent;
+  height: 24px;
+  width: 24px;
+  padding: 0;
 }
 #sidebar .projectSection {
   margin-top: 16px;
@@ -189,6 +214,37 @@ main #plusToDo {
   border-radius: 16px;
   background-color: gold;
   margin-right: 4px;
+}
+main #mainTitle {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: row;
+  padding-left: 24px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+main #mainTitle button {
+  display: flex;
+  background: transparent;
+  height: 24px;
+  width: 24px;
+  padding: 0;
+}
+main #mainTitle #delete-project-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: black;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  width: 115px;
+  height: 50px;
+  background-color: #059669;
+}
+main #mainTitle > div {
+  margin-right: 24px;
 }
 
 .dropdown {
@@ -412,13 +468,6 @@ label {
   width: -moz-max-content;
   width: max-content;
   justify-content: flex-start;
-}
-
-#mainTitle {
-  display: flex;
-  align-self: flex-start;
-  flex-direction: column;
-  padding-left: 24px;
 }
 
 .projectContainer {

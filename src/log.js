@@ -26,13 +26,13 @@ const taskLog = () => {
   }
 
   function addList(title) {
-    let lisInLog = false;
+    let listInLog = false;
     myLists.forEach((list) => {
         if (title == list.title) {
-          lisInLog = true;
+          listInLog = true;
         }
     });
-    if (lisInLog == false) {
+    if (listInLog == false) {
         let newList = listFactory(title);
         myLists.push(newList);
         return newList;
@@ -88,7 +88,12 @@ const taskLog = () => {
   function renderProjects() {
     myProjects.forEach((project) => {
       let id = project.parentTitle.replace(/\s+/g, '-').toLowerCase();
-      initialRender.displayProject(document.querySelector(`#${id}`).nextSibling, project.title, project.parentTitle);
+      if (document.querySelector(`#${id}`) == null) {
+        alert('That list doesn\'t exist');
+        return;
+      } else {
+        initialRender.displayProject(document.querySelector(`#${id}`).nextSibling, project.title, project.parentTitle);
+      }
     });
   }
 
@@ -116,7 +121,6 @@ const taskLog = () => {
         initialRender.displayTask(document.querySelector(`#${id}`).nextSibling, toDo.title, toDo.parentTitle, toDo);
       }
     });
-    console.log(myToDos);
   }
 
   return {
@@ -130,6 +134,8 @@ const taskLog = () => {
     renderToDos,
     myToDos,
     myTasks,
+    myProjects,
+    myLists,
   }
 };
 export const initialTasks = taskLog();

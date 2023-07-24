@@ -75,18 +75,78 @@ const homePage = () => {
     const titleContainer = document.createElement('div');
     titleContainer.id = 'mainTitle';
     const mainTitle = document.createElement('h1');
-
     mainTitle.innerText = title;
-
+    
     titleContainer.appendChild(mainTitle);
     main.appendChild(titleContainer);
+
+    const container = document.createElement('div');
+    container.classList = 'container';
+    const dropdown = document.createElement('div');
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.id = 'dropdownBtnProject';
+    dropdown.id = 'dropdownProject';
+    dropdown.classList = 'dropdown';
+    const deleteProjectBtn = document.createElement('button');
+
+    
+    deleteProjectBtn.id = 'delete-project-btn';
+    deleteProjectBtn.innerText = 'Delete Project';
+    
+    dropdown.appendChild(deleteProjectBtn);
+    container.appendChild(dropdownBtn);
+    container.appendChild(dropdown);
+    titleContainer.appendChild(container);
+
+    const toggleDropdown = function () {
+      dropdown.classList.toggle("show");
+    };
+
+    dropdownBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    document.documentElement.addEventListener("click", function () {
+      if (dropdown.classList.contains("show")) {
+        toggleDropdown();
+      }
+    });
+
+    function deleteProject(projectTitle) {
+      
+      initialTasks.myTasks.forEach((task) => {
+        if (task.parentTitle == projectTitle) {
+          renderSubDropdown.deleteSection(task.title);
+        }
+      });
+
+      for (let i = 0; i < initialTasks.myProjects.length; i++) {
+
+        if (initialTasks.myProjects[i].title == projectTitle) {
+          initialTasks.myProjects.splice(i, 1);
+        }
+      }; 
+
+      const mainContainerSelect = document.querySelector('#mainTitle');
+      mainContainerSelect.innerHTML = '';
+    }
+
+    renderMainTitle.deleteProject = deleteProject;
+
+    deleteProjectBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      deleteProject(title);
+      const projectSidebarSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
+      projectSidebarSelect.remove();
+    });
   }
 
   function displayLists(title) {
     const projectSection = document.createElement('div');
     const projectContainer = document.createElement('div');
     projectContainer.classList = 'projectContainer';
-    projectSection.id = title.toLowerCase();
+    projectSection.id = title.replace(/\s+/g, '-').toLowerCase();
     projectSection.classList = 'projectSection';
 
     const symbol = document.createElement('img');
@@ -98,8 +158,87 @@ const homePage = () => {
 
     projectSection.appendChild(symbol);
     projectSection.appendChild(listTitle);
+    
+    const container = document.createElement('div');
+    container.classList = 'container';
+    const dropdown = document.createElement('div');
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.id = 'dropdownBtnList';
+    dropdown.id = 'dropdownList';
+    dropdown.classList = 'dropdown';
+    const deleteListBtn = document.createElement('button');
+    
+    
+    
+    deleteListBtn.id = 'delete-list-btn';
+    deleteListBtn.innerText = 'Delete List';
+    
+    dropdown.appendChild(deleteListBtn);
+    container.appendChild(dropdownBtn);
+    container.appendChild(dropdown);
+    projectSection.appendChild(container);
+    
     sidebar.appendChild(projectSection);
     sidebar.appendChild(projectContainer);
+
+    const toggleDropdown = function () {
+      dropdown.classList.toggle("show");
+    };
+
+    dropdownBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+
+    document.documentElement.addEventListener("click", function () {
+      if (dropdown.classList.contains("show")) {
+        toggleDropdown();
+      }
+    });
+
+    function deleteList(listTitle) {
+      
+      initialTasks.myProjects.forEach((project) => {
+        if (project.parentTitle == listTitle) {
+          renderMainTitle.deleteProject(project.title);
+        }
+      });
+
+      for (let i = 0; i < initialTasks.myLists.length; i++) {
+
+        if (initialTasks.myLists[i].title == title) {
+          initialTasks.myLists.splice(i, 1);
+        }
+      }; 
+
+      const listContainerSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
+      listContainerSelect.innerHTML = '';
+      console.log(initialTasks.myLists);
+      console.log(initialTasks.myProjects);
+      console.log(initialTasks.myTasks);
+      console.log(initialTasks.myToDos);
+    }
+
+    deleteListBtn.addEventListener('click', function(event) {
+      event.stopPropagation();
+      if (initialTasks.myProjects.length > 0) {
+        main.innerHTML = '';
+        renderMainTitle(initialTasks.myProjects[0].title);
+        renderMainContainer();
+        initialTasks.renderTasks(initialTasks.myProjects[0].title);
+      }
+      deleteList(title);
+      main.innerHTML = '';
+      header.innerHTML = '';
+      renderLogo();
+      renderPlus();
+      const listSidebarSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
+      listSidebarSelect.nextSibling.remove();
+      listSidebarSelect.remove();
+    });
+
+
+
   }
   
   function displayProject(container, title, parentTitle) {
@@ -148,7 +287,6 @@ const homePage = () => {
       const newSubSection = initialTasks.addTask(prompt('New Sub-Section:'), title);
       cardBox.innerHTML = '';
       initialTasks.renderTasks(title);
-      console.log(initialTasks.myTasks);
     });
 
   }
@@ -288,7 +426,6 @@ const homePage = () => {
         }
         const currentDueDateBox = document.querySelector('#dueDateInput');
         const today = format(new Date(), 'MM-dd-yyyy');
-        console.log(today);
         if (isBefore(new Date(tempDueDate), new Date(today))) {
           currentDueDateBox.style.backgroundColor = "red";
         } else {
@@ -296,7 +433,6 @@ const homePage = () => {
         }
         dueDateInput.value = tempDueDate;
         toDo.dueDate = tempDueDate;
-        console.log(initialTasks.myToDos);
       });
     });
   }
@@ -376,9 +512,10 @@ const homePage = () => {
         if (initialTasks.myTasks[k].title == sectionTitle) {
           initialTasks.myTasks.splice(k, 1);
         }
-        console.log(initialTasks.myTasks);
       }; 
     }
+
+    renderSubDropdown.deleteSection = deleteSection;
 
     deleteTaskBtn.addEventListener('click', function(event) {
       event.stopPropagation();
