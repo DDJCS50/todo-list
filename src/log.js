@@ -35,6 +35,7 @@ const taskLog = () => {
     if (listInLog == false) {
         let newList = listFactory(title);
         myLists.push(newList);
+        localStorage.setItem("lists", JSON.stringify(myLists));
         return newList;
     }
   }
@@ -49,6 +50,7 @@ const taskLog = () => {
     if (projectInLog == false) {
         let newProject = projectFactory(title, parentTitle);
         myProjects.push(newProject);
+        localStorage.setItem("projects", JSON.stringify(myProjects));
     }
   }
 
@@ -62,6 +64,7 @@ const taskLog = () => {
     if (taskInLog == false) {
         let newTask = taskFactory(title, parentTitle);
         myTasks.push(newTask);
+        localStorage.setItem("tasks", JSON.stringify(myTasks));
     }
   }
 
@@ -121,6 +124,78 @@ const taskLog = () => {
         initialRender.displayTask(document.querySelector(`#${id}`).nextSibling, toDo.title, toDo.parentTitle, toDo);
       }
     });
+  } 
+
+  function isLocalStorageAvailable() {
+    let test = 'test';
+    try {
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }
+  
+  function localStorageInsert(title) {
+    if (isLocalStorageAvailable()) {
+
+      if (localStorage.getItem("lists") === null) {
+        localStorage.setItem("lists", JSON.stringify(myLists));
+      } else {
+        myLists = JSON.parse(localStorage.getItem("lists"));
+        myLists.forEach((list) => {
+          addList(list.title);
+        });
+        let sidebar = document.querySelector('#sidebar');
+        sidebar.innerHTML = '';
+        renderLists();
+        initialRender.renderAddList();
+      }
+
+      if (localStorage.getItem("projects") === null) {
+        localStorage.setItem("projects", JSON.stringify(myProjects));
+      } else {
+        myProjects = JSON.parse(localStorage.getItem("projects"));
+        myProjects.forEach((project) => {
+          addProject(project.title);
+        });
+        let sidebar = document.querySelector('#sidebar');
+        sidebar.innerHTML = '';
+        renderLists();
+        renderProjects();
+        initialRender.renderAddList();
+      }
+
+      if (localStorage.getItem("tasks") === null) {
+        localStorage.setItem("tasks", JSON.stringify(myTasks));
+      } else {
+        myTasks = JSON.parse(localStorage.getItem("tasks"));
+        myTasks.forEach((task) => {
+          addTask(task.title);
+        });
+        renderTasks(title);
+      }
+
+      if (localStorage.getItem("todos") === null) {
+        localStorage.setItem("todos", JSON.stringify(myToDos));
+      } else {
+        myToDos = JSON.parse(localStorage.getItem("todos"));
+      }
+  
+    
+      let storedLists = JSON.parse(localStorage.getItem("lists"));
+      let storedProjects = JSON.parse(localStorage.getItem("projects"));
+      let storedTasks = JSON.parse(localStorage.getItem("tasks"));
+      let storedToDos = JSON.parse(localStorage.getItem("todos"));
+      console.log(storedLists, storedProjects, storedTasks, storedToDos);
+    } else {
+      alert('Local Storage Error');
+    }
+    
+    for (let l = 0; l < localStorage.length; l++) {
+      console.log(localStorage.key(l));
+    }
   }
 
   return {
@@ -132,6 +207,7 @@ const taskLog = () => {
     renderProjects,
     renderTasks, 
     renderToDos,
+    localStorageInsert,
     myToDos,
     myTasks,
     myProjects,

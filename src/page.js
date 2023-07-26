@@ -39,6 +39,7 @@ const homePage = () => {
         container.innerHTML = '';
       });
       initialTasks.renderProjects();
+      initialTasks.localStorageInsert();
     });
   }
 
@@ -61,6 +62,7 @@ const homePage = () => {
       const newList = initialTasks.addList(prompt('New List:'));
       displayLists(newList.title);
       sidebar.insertBefore(listBtn, sidebar.lastChild.nextSibling);
+      initialTasks.localStorageInsert();
     });
   }
 
@@ -125,6 +127,7 @@ const homePage = () => {
 
         if (initialTasks.myProjects[i].title == projectTitle) {
           initialTasks.myProjects.splice(i, 1);
+          localStorage.setItem("projects", JSON.stringify(initialTasks.myProjects));
         }
       }; 
 
@@ -136,9 +139,11 @@ const homePage = () => {
 
     deleteProjectBtn.addEventListener('click', function(event) {
       event.stopPropagation();
+      initialTasks.myProjects = JSON.parse(localStorage.getItem("projects"));
       deleteProject(title);
       const projectSidebarSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
       projectSidebarSelect.remove();
+      initialTasks.localStorageInsert();
     });
   }
 
@@ -208,8 +213,9 @@ const homePage = () => {
 
         if (initialTasks.myLists[i].title == title) {
           initialTasks.myLists.splice(i, 1);
+          localStorage.setItem("lists", JSON.stringify(initialTasks.myLists));
         }
-      }; 
+      }
 
       const listContainerSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
       listContainerSelect.innerHTML = '';
@@ -227,6 +233,7 @@ const homePage = () => {
         renderMainContainer();
         initialTasks.renderTasks(initialTasks.myProjects[0].title);
       }
+      initialTasks.myLists = JSON.parse(localStorage.getItem("lists"));
       deleteList(title);
       main.innerHTML = '';
       header.innerHTML = '';
@@ -235,6 +242,7 @@ const homePage = () => {
       const listSidebarSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
       listSidebarSelect.nextSibling.remove();
       listSidebarSelect.remove();
+      initialTasks.localStorageInsert();
     });
 
 
@@ -280,6 +288,11 @@ const homePage = () => {
       renderMainTitle(title);
       renderMainContainer();
       initialTasks.renderTasks(title);
+      let mainBoxSelect = document.querySelector('#cardBox');
+        if (mainBoxSelect != null) {
+          mainBoxSelect.innerHTML = '';
+        }
+      initialTasks.localStorageInsert(title);
     });
     
     subSectionBtn.addEventListener('click', function(event) {
@@ -287,6 +300,11 @@ const homePage = () => {
       const newSubSection = initialTasks.addTask(prompt('New Sub-Section:'), title);
       cardBox.innerHTML = '';
       initialTasks.renderTasks(title);
+      let mainBoxSelect = document.querySelector('#cardBox');
+        if (mainBoxSelect != null) {
+          mainBoxSelect.innerHTML = '';
+        }
+      initialTasks.localStorageInsert(title);
     });
 
   }
@@ -346,6 +364,7 @@ const homePage = () => {
     checkbox.addEventListener("click", function () {
       if (checkbox.value == 'on') {
         deleteToDo(task);
+        initialTasks.localStorageInsert();
       }
     });
 
@@ -434,6 +453,7 @@ const homePage = () => {
         dueDateInput.value = tempDueDate;
         toDo.dueDate = tempDueDate;
       });
+      initialTasks.localStorageInsert();
     });
   }
 
@@ -473,6 +493,7 @@ const homePage = () => {
       event.stopPropagation();
       const newToDo = initialTasks.addToDo(prompt('New Todo:'), title);
       initialTasks.renderToDos(title);
+      initialTasks.localStorageInsert();
     });
 
     const toggleDropdown = function () {
@@ -511,6 +532,7 @@ const homePage = () => {
 
         if (initialTasks.myTasks[k].title == sectionTitle) {
           initialTasks.myTasks.splice(k, 1);
+          localStorage.setItem("tasks", JSON.stringify(initialTasks.myTasks));
         }
       }; 
     }
@@ -519,7 +541,20 @@ const homePage = () => {
 
     deleteTaskBtn.addEventListener('click', function(event) {
       event.stopPropagation();
+      initialTasks.myTasks = JSON.parse(localStorage.getItem("tasks"));
+      let holderParentTitle;
+      for (let n = 0; n < initialTasks.myTasks.length; n++) {
+        if (initialTasks.myTasks[n].title == title) {
+          holderParentTitle = initialTasks.myTasks[n].parentTitle;
+        }
+      }
       deleteSection(title);
+      let mainBoxSelect = document.querySelector('#cardBox');
+        if (mainBoxSelect != null) {
+          mainBoxSelect.innerHTML = '';
+        }
+      initialTasks.renderTasks(title);
+      initialTasks.localStorageInsert(holderParentTitle);
     });
   }
 
