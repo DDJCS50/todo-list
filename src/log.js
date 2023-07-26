@@ -78,6 +78,7 @@ const taskLog = () => {
     if (toDoInLog == false) {
       let newToDo = toDoFactory(title, parentTitle, description, dueDate, priority);
       myToDos.push(newToDo);
+      localStorage.setItem("todos", JSON.stringify(myToDos));
     }
   }
 
@@ -137,7 +138,7 @@ const taskLog = () => {
     }
   }
   
-  function localStorageInsert(title) {
+  function localStorageInsert(title, taskTitle) {
     if (isLocalStorageAvailable()) {
 
       if (localStorage.getItem("lists") === null) {
@@ -174,6 +175,10 @@ const taskLog = () => {
         myTasks.forEach((task) => {
           addTask(task.title);
         });
+        let mainBox = document.querySelector('#cardBox');
+        if (mainBox != null) {
+          mainBox.innerHTML = '';
+        }
         renderTasks(title);
       }
 
@@ -181,6 +186,17 @@ const taskLog = () => {
         localStorage.setItem("todos", JSON.stringify(myToDos));
       } else {
         myToDos = JSON.parse(localStorage.getItem("todos"));
+        myToDos.forEach((toDo) => {
+          addToDo(toDo.title);
+        });
+        let sidebar = document.querySelector('#sidebar');
+        sidebar.innerHTML = '';
+        renderLists();
+        renderProjects();
+        initialRender.renderAddList();
+        if (taskTitle != undefined) {
+          renderToDos(taskTitle);
+        }
       }
   
     
@@ -192,10 +208,13 @@ const taskLog = () => {
     } else {
       alert('Local Storage Error');
     }
-    
-    for (let l = 0; l < localStorage.length; l++) {
-      console.log(localStorage.key(l));
-    }
+  }
+
+  function memoryClean(lists, projects, tasks, todos) {
+    localStorage.setItem("lists", JSON.stringify(myLists));
+    localStorage.setItem("projects", JSON.stringify(myProjects));
+    localStorage.setItem("tasks", JSON.stringify(myTasks));
+    localStorage.setItem("todos", JSON.stringify(myToDos));
   }
 
   return {
@@ -208,6 +227,7 @@ const taskLog = () => {
     renderTasks, 
     renderToDos,
     localStorageInsert,
+    memoryClean,
     myToDos,
     myTasks,
     myProjects,

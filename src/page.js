@@ -219,10 +219,6 @@ const homePage = () => {
 
       const listContainerSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
       listContainerSelect.innerHTML = '';
-      console.log(initialTasks.myLists);
-      console.log(initialTasks.myProjects);
-      console.log(initialTasks.myTasks);
-      console.log(initialTasks.myToDos);
     }
 
     deleteListBtn.addEventListener('click', function(event) {
@@ -348,6 +344,7 @@ const homePage = () => {
         selectedDropdown.remove();
       }
       initialTasks.myToDos.splice(toDoDeleteTarget.toDoIndex, 1);
+      localStorage.setItem("todos", JSON.stringify(initialTasks.myToDos));
     }
     
     displayTask.deleteToDo = deleteToDo;
@@ -363,8 +360,27 @@ const homePage = () => {
 
     checkbox.addEventListener("click", function () {
       if (checkbox.value == 'on') {
+        initialTasks.myToDos = JSON.parse(localStorage.getItem("todos"));
+        initialTasks.myTasks = JSON.parse(localStorage.getItem("tasks"));
+        initialTasks.myProjects = JSON.parse(localStorage.getItem("projects"));
+        initialTasks.myLists = JSON.parse(localStorage.getItem("lists"));
         deleteToDo(task);
-        initialTasks.localStorageInsert();
+        let taskHolder;
+        let projectHolder;
+        for (let i = 0; i < initialTasks.myTasks.length; i++) {
+          if (initialTasks.myTasks[i].title == task.parentTitle) {
+            taskHolder = initialTasks.myTasks[i];
+          }
+        }
+        if (taskHolder != null && taskHolder != undefined) {
+          for (let j = 0; j < initialTasks.myProjects.length; j++) {
+            if (initialTasks.myProjects[j].title == taskHolder.parentTitle) {
+              projectHolder = initialTasks.myProjects[j];
+            }
+          }
+          localStorage.setItem("lists", JSON.stringify(initialTasks.myLists));
+        }
+        initialTasks.localStorageInsert(projectHolder.title, taskHolder.title);
       }
     });
 
@@ -439,6 +455,7 @@ const homePage = () => {
         priorityInput.value = tempPriority;
         toDo.priority = tempPriority;
 
+        
         let tempDueDate = dueDateInput.value;
         if (tempDueDate != undefined && tempDueDate != null && tempDueDate != '') {
           tempDueDate = format(new Date(tempDueDate), "MM-dd-yyyy");
@@ -452,8 +469,37 @@ const homePage = () => {
         }
         dueDateInput.value = tempDueDate;
         toDo.dueDate = tempDueDate;
+        for (let i = 0; i < initialTasks.myToDos.length; i++) {
+          if (initialTasks.myToDos[i].title == toDo.title) {
+            initialTasks.myToDos[i].description = toDo.description;
+            initialTasks.myToDos[i].priority = toDo.priority;
+            initialTasks.myToDos[i].dueDate = toDo.dueDate;
+          }
+        }
+        localStorage.setItem("todos", JSON.stringify(initialTasks.myToDos));
       });
-      initialTasks.localStorageInsert();
+      initialTasks.myToDos = JSON.parse(localStorage.getItem("todos"));
+      initialTasks.myTasks = JSON.parse(localStorage.getItem("tasks"));
+      initialTasks.myProjects = JSON.parse(localStorage.getItem("projects"));
+      initialTasks.myLists = JSON.parse(localStorage.getItem("lists"));
+      let toDoHolderThree;
+      let taskHolderThree;
+      let projectHolderThree;
+      toDoHolderThree = toDo;
+      if (toDoHolderThree != null && toDoHolderThree != undefined) {
+
+        for (let j = 0; j < initialTasks.myTasks.length; j++) {
+          if (initialTasks.myTasks[j].title == toDoHolderThree.parentTitle) {
+            taskHolderThree = initialTasks.myTasks[j];
+          }
+        }
+        for (let k = 0; k < initialTasks.myProjects.length; k++) {
+          if (initialTasks.myProjects[k].title == taskHolderThree.parentTitle) {
+            projectHolderThree = initialTasks.myProjects[k];
+          }
+        }
+      }
+      box.insertBefore(container, subContainer.nextSibling);
     });
   }
 
@@ -491,9 +537,27 @@ const homePage = () => {
 
     toDoBtn.addEventListener('click', function(event) {
       event.stopPropagation();
-      const newToDo = initialTasks.addToDo(prompt('New Todo:'), title);
+      let newToDo = initialTasks.addToDo(prompt('New Todo:'), title);
       initialTasks.renderToDos(title);
-      initialTasks.localStorageInsert();
+      initialTasks.myToDos = JSON.parse(localStorage.getItem("todos"));
+      initialTasks.myTasks = JSON.parse(localStorage.getItem("tasks"));
+      initialTasks.myProjects = JSON.parse(localStorage.getItem("projects"));
+      initialTasks.myLists = JSON.parse(localStorage.getItem("lists"));
+      let taskHolderTwo;
+      let projectHolderTwo;
+      for (let m = 0; m < initialTasks.myTasks.length; m++) {
+        if (initialTasks.myTasks[m].title == title) {
+          taskHolderTwo = initialTasks.myTasks[m];
+        }
+      }
+      if (taskHolderTwo != null && taskHolderTwo != undefined) {
+        for (let p = 0; p < initialTasks.myProjects.length; p++) {
+          if (initialTasks.myProjects[p].title == taskHolderTwo.parentTitle) {
+            projectHolderTwo = initialTasks.myProjects[p];
+          }
+        }
+      }
+      initialTasks.localStorageInsert(projectHolderTwo.title, taskHolderTwo.title);
     });
 
     const toggleDropdown = function () {
@@ -513,10 +577,15 @@ const homePage = () => {
 
     function deleteSection(sectionTitle) {
       for (let i = 0; i < initialTasks.myToDos.length; i++) {
+        initialTasks.myToDos[i].toDoIndex = i;
+        initialTasks.myToDos[i].toDoId = i.toString();
+      }
+      for (let i = 0; i < initialTasks.myToDos.length; i++) {
         initialTasks.myToDos.forEach((toDo) => {
           const index = toDo.toDoIndex;
           if (toDo.parentTitle == sectionTitle) {
             initialTasks.myToDos.splice(index, 1);
+            localStorage.setItem("todos", JSON.stringify(initialTasks.myToDos));
             for (let j = 0; j < initialTasks.myToDos.length; j++) {
               initialTasks.myToDos[j].toDoIndex = j;
               initialTasks.myToDos[j].toDoId = j.toString();
