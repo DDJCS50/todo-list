@@ -33,7 +33,19 @@ const homePage = () => {
     header.appendChild(plusBtn);
     plusBtn.addEventListener('click', function(event) {
       event.stopPropagation();
-      initialTasks.addProject(prompt('Project Title:'), prompt('List Section:'));
+      let projectTitle = prompt('Project Title:');
+      if (projectTitle == undefined) {
+        return;
+      } else if (projectTitle.title === null) {
+        return;
+      }
+      let listSection = prompt('List Section:');
+      if (listSection == undefined) {
+        return;
+      } else if (listSection.title === null) {
+        return;
+      }
+      initialTasks.addProject(projectTitle, listSection );
       const containers = document.querySelectorAll('.projectContainer');
       containers.forEach((container) => {
         container.innerHTML = '';
@@ -60,6 +72,11 @@ const homePage = () => {
     listBtn.addEventListener('click', function(event) {
       event.stopPropagation();
       const newList = initialTasks.addList(prompt('New List:'));
+      if (newList == undefined) {
+        return;
+      } else if (newList.title == null) {
+        return;
+      }
       displayLists(newList.title);
       sidebar.insertBefore(listBtn, sidebar.lastChild.nextSibling);
       initialTasks.localStorageInsert();
@@ -116,12 +133,22 @@ const homePage = () => {
     });
 
     function deleteProject(projectTitle) {
-      
-      initialTasks.myTasks.forEach((task) => {
-        if (task.parentTitle == projectTitle) {
-          renderSubDropdown.deleteSection(task.title);
+      initialTasks.myTasks = JSON.parse(localStorage.getItem("tasks"));
+
+      for (let k = 0; k < initialTasks.myTasks.length; k++) {
+        if (initialTasks.myTasks[k].parentTitle == projectTitle) {
+          renderSubDropdown.deleteSection(initialTasks.myTasks[k].title);
+          k = 0;
         }
-      });
+      }
+
+      for (let l = 0; l < initialTasks.myTasks.length; l++) {
+
+        if (initialTasks.myTasks[l].parentTitle == projectTitle) {
+          initialTasks.myTasks.splice(l, 1);
+          localStorage.setItem("tasks", JSON.stringify(initialTasks.myTasks));
+        }
+      }
 
       for (let i = 0; i < initialTasks.myProjects.length; i++) {
 
@@ -139,6 +166,9 @@ const homePage = () => {
 
     deleteProjectBtn.addEventListener('click', function(event) {
       event.stopPropagation();
+      header.innerHTML = '';
+      renderLogo();
+      renderPlus();
       initialTasks.myProjects = JSON.parse(localStorage.getItem("projects"));
       deleteProject(title);
       const projectSidebarSelect = document.querySelector(`#${title.replace(/\s+/g, '-').toLowerCase()}`);
@@ -293,7 +323,13 @@ const homePage = () => {
     
     subSectionBtn.addEventListener('click', function(event) {
       event.stopPropagation();
-      const newSubSection = initialTasks.addTask(prompt('New Sub-Section:'), title);
+      let subSectionHolder = prompt('New Sub-Section:');
+      if (subSectionHolder == undefined) {
+        return;
+      } else if (subSectionHolder === null) {
+        return;
+      }
+      const newSubSection = initialTasks.addTask(subSectionHolder, title);
       cardBox.innerHTML = '';
       initialTasks.renderTasks(title);
       let mainBoxSelect = document.querySelector('#cardBox');
@@ -595,8 +631,25 @@ const homePage = () => {
           mainBox.innerHTML = '';
         });
       }
-
-      initialTasks.renderTasks(sectionTitle);
+      for (let p = 0; p < initialTasks.myToDos.length; p++) {
+        if (initialTasks.myToDos[p].parentTitle == sectionTitle) {
+          initialTasks.myToDos.splice(p, 1);
+          localStorage.setItem("todos", JSON.stringify(initialTasks.myToDos));
+        }
+      }
+      let taskParent;
+      let taskHolderInner;
+      for (let i = 0; i < initialTasks.myTasks.length; i++) {
+        if (initialTasks.myTasks[i].title == title) {
+          taskHolderInner = initialTasks.myTasks[i];
+        }
+      }
+      for (let j = 0; j < initialTasks.myProjects.length; j++) {
+        if (initialTasks.myProjects[j].title == taskHolderInner.parentTitle) {
+          taskParent = initialTasks.myProjects[j];
+        }
+      }
+      initialTasks.renderTasks(taskParent.title);
       for (let k = 0; k < initialTasks.myTasks.length; k++) {
 
         if (initialTasks.myTasks[k].title == sectionTitle) {

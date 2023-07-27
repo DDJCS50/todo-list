@@ -204,7 +204,6 @@ const taskLog = () => {
       let storedProjects = JSON.parse(localStorage.getItem("projects"));
       let storedTasks = JSON.parse(localStorage.getItem("tasks"));
       let storedToDos = JSON.parse(localStorage.getItem("todos"));
-      console.log(storedLists, storedProjects, storedTasks, storedToDos);
     } else {
       alert('Local Storage Error');
     }
